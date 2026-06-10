@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>EY Party </title>
+<style>
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    text-align: center;
+
+    margin-top: 120px;
+
+    background: #fafafa;
+
+    overflow: hidden;
+
+}
+
+h1 {
+
+    margin-bottom: 40px;
+
+}
+
+button {
+
+    padding: 14px 28px;
+
+    font-size: 18px;
+
+    margin: 10px;
+
+    cursor: pointer;
+
+    border-radius: 10px;
+
+    border: none;
+
+}
+
+#oui {
+
+    background-color: #4CAF50;
+
+    color: white;
+
+}
+
+#non {
+
+    background-color: #ff4d4d;
+
+    color: white;
+
+    position: absolute;
+
+}
+</style>
+</head>
+<body>
+<h1>Es-tu prête à devenir officiellement ma partenaire de mauvaises décisions à la EY Party ? </h1>
+<button id="oui">Oui</button>
+<button id="non">Non</button>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+
+const non = document.getElementById("non");
+
+const oui = document.getElementById("oui");
+
+non.addEventListener("mouseover", () => {
+
+    const maxX = window.innerWidth - 120;
+
+    const maxY = window.innerHeight - 60;
+
+    const x = Math.random() * maxX;
+
+    const y = Math.random() * maxY;
+
+    non.style.left = x + "px";
+
+    non.style.top = y + "px";
+
+    non.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+});
+
+oui.onclick = () => {
+
+    const duration = 3000;
+
+    const end = Date.now() + duration;
+
+    (function frame() {
+
+        confetti({
+
+            particleCount: 6,
+
+            spread: 80,
+
+            origin: { y: 0.6 }
+
+        });
+
+        if (Date.now() < end) {
+
+            requestAnimationFrame(frame);
+
+        }
+
+    })();
+
+    document.body.innerHTML = `
+<h1>🎉 Félicitations 🎉</h1>
+<h2>Vous avez pris la bonne décision</h2>
+<p>
+
+        Celle de profiter et de ne jamais reculer devant la possibilité de se REGSSS
+</p>
+
+    `;
+
+};
+</script>
+</body>
+</html>
+ 
