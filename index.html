@@ -1,26 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>EY Choice Simulator</title>
+<title>EY Reality Simulator</title>
 
 <style>
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    margin-top: 120px;
+    margin-top: 100px;
     background: #fafafa;
     overflow: hidden;
+    transition: background 1s;
 }
 
-h1 {
-    margin-bottom: 40px;
-}
+h1 { margin-bottom: 30px; }
 
 button {
     padding: 14px 28px;
-    font-size: 18px;
+    font-size: 16px;
     margin: 10px;
     cursor: pointer;
     border-radius: 10px;
@@ -37,6 +35,26 @@ button {
     background-color: #ff4d4d;
     color: white;
 }
+
+/* petit dev qui suit */
+#worker {
+    position: absolute;
+    font-size: 30px;
+    pointer-events: none;
+    transition: 0.1s;
+}
+
+/* emoji flottants */
+.floating {
+    position: absolute;
+    font-size: 24px;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
 </style>
 </head>
 
@@ -45,46 +63,70 @@ button {
 <h1>Tu préfères...</h1>
 
 <p>
-1️⃣ Te téléporter n'importe où dans le monde et être millionnaire instantanément 💸🌍  
+1️⃣ Te téléporter n'importe où et être millionnaire 💸🌍  
 <br><br>
-2️⃣ Finir tous tes leads de la journée afin de rendre les shareholders happy 📊
+2️⃣ Finir tous tes leads pour rendre les shareholders happy 📊
 </p>
 
 <button id="opt1">Choix 1</button>
 <button id="opt2">Choix 2</button>
 
-<script>
+<div id="worker">🧑‍💻</div>
 
+<script>
 const opt1 = document.getElementById("opt1");
 const opt2 = document.getElementById("opt2");
+const worker = document.getElementById("worker");
 
-// Bouton impossible à cliquer
-opt1.addEventListener("mouseover", () => {
+// bouton impossible à cliquer + il rétrécit
+opt1.addEventListener("mousemove", () => {
     const maxX = window.innerWidth - 120;
     const maxY = window.innerHeight - 60;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
-    opt1.style.left = x + "px";
-    opt1.style.top = y + "px";
-    opt1.style.transform = `rotate(${Math.random() * 360}deg)`;
+    opt1.style.left = Math.random() * maxX + "px";
+    opt1.style.top = Math.random() * maxY + "px";
+    opt1.style.transform = `scale(${0.5 + Math.random() * 0.5}) rotate(${Math.random()*360}deg)`;
 });
 
-// Seul choix possible
+// petit perso qui suit la souris
+document.addEventListener("mousemove", (e) => {
+    worker.style.left = e.pageX + 10 + "px";
+    worker.style.top = e.pageY + 10 + "px";
+});
+
+// emojis flottants random
+setInterval(() => {
+    const el = document.createElement("div");
+    el.className = "floating";
+    el.innerText = Math.random() > 0.5 ? "💸" : "📊";
+    el.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(el);
+
+    setTimeout(() => el.remove(), 6000);
+}, 400);
+
+// choix 2 = réalité EY
 opt2.onclick = () => {
+    let leads = 5;
+
+    document.body.style.background = "#111";
+    document.body.style.color = "white";
 
     document.body.innerHTML = `
     <h1>🎉 Félicitations 🎉</h1>
     <h2>Vous êtes un bon employé EY ✅</h2>
-    <p>
-    Vous avez le droit à une augmentation de <b>0 euro</b> 💰  
-    <br><br>
-    Ainsi qu'à <b>plus de leads à réaliser demain</b> 📈  
-    </p>
+    <p>Augmentation: <b>0€</b> 💀</p>
+    <h3 id="counter">Leads restants: ${leads}</h3>
+    <p>Loading motivation...</p>
     `;
-};
 
+    // compteur qui empire 😈
+    setInterval(() => {
+        leads += Math.floor(Math.random() * 3) + 1;
+        document.getElementById("counter").innerText =
+            "Leads restants: " + leads;
+    }, 1500);
+};
 </script>
 
 </body>
